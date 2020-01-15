@@ -30,6 +30,7 @@ import coil.util.Utils
 import coil.util.createMockWebServer
 import coil.util.createOptions
 import coil.util.getDrawableCompat
+import coil.util.size
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -301,7 +302,7 @@ class RealImageLoaderIntegrationTest {
 
         val resultDrawable = result.drawable
         assertTrue(resultDrawable is BitmapDrawable)
-        assertTrue(resultDrawable.bitmap.run { width == size.width && height == size.height })
+        assertEquals(resultDrawable.bitmap.size, size)
     }
 
     @Test
@@ -385,7 +386,7 @@ class RealImageLoaderIntegrationTest {
 
         val drawable = imageView.drawable
         assertTrue(drawable is BitmapDrawable)
-        assertEquals(expectedSize, drawable.bitmap.run { PixelSize(width, height) })
+        assertEquals(expectedSize, drawable.bitmap.size)
     }
 
     private fun testGet(data: Any, expectedSize: PixelSize = PixelSize(100, 125)) {
@@ -396,7 +397,7 @@ class RealImageLoaderIntegrationTest {
         }
 
         assertTrue(drawable is BitmapDrawable)
-        assertEquals(expectedSize, drawable.bitmap.run { PixelSize(width, height) })
+        assertEquals(expectedSize, drawable.bitmap.size)
     }
 
     private fun copyNormalImageAssetToCacheDir(): File {
