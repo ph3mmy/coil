@@ -24,7 +24,6 @@ import coil.size.SizeResolver
 import coil.transform.Transformation
 import coil.util.createBitmap
 import coil.util.createGetRequest
-import coil.util.createImageLoader
 import coil.util.createLoadRequest
 import coil.util.error
 import coil.util.toDrawable
@@ -32,6 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -62,11 +62,14 @@ class RealImageLoaderBasicTest {
         bitmapPool = BitmapPool(Long.MAX_VALUE)
         referenceCounter = BitmapReferenceCounter(bitmapPool)
         memoryCache = MemoryCache(referenceCounter, Int.MAX_VALUE)
-        imageLoader = createImageLoader(
-            context = context,
-            bitmapPool = bitmapPool,
-            referenceCounter = referenceCounter,
-            memoryCache = memoryCache
+        imageLoader = RealImageLoader(
+            context,
+            DefaultRequestOptions(),
+            bitmapPool,
+            referenceCounter,
+            memoryCache,
+            OkHttpClient(),
+            ComponentRegistry()
         )
     }
 
